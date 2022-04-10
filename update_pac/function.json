@@ -1,0 +1,18 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "pacTimer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "25 15 3 * * *"
+    },
+    {
+      "type": "blob",
+      "direction": "out",
+      "name": "pacBlob",
+      "path": "pac/gfwlist-17mon",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}
