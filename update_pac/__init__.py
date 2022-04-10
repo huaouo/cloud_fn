@@ -3,6 +3,7 @@ import logging
 import requests
 import gzip
 import json
+import rjsmin
 
 import azure.functions as func
 
@@ -19,8 +20,8 @@ def main(pacTimer: func.TimerRequest, pacBlob: func.Out[bytes]) -> None:
     asset_urls = [a['browser_download_url'] for a in assets]
     gfwlist_17mon_url = asset_urls[1]
     if 'gfwlist-17mon' not in gfwlist_17mon_url:
-        logging.error(
-            '[%s] Error: the second artifact is not gfwlist-17mon.', utc_timestamp)
+        logging.error('[%s] Error: the second artifact is not gfwlist-17mon.',
+                      utc_timestamp)
         return
 
     pac_resp = requests.get(gfwlist_17mon_url)
@@ -29,4 +30,4 @@ def main(pacTimer: func.TimerRequest, pacBlob: func.Out[bytes]) -> None:
         if chunk:
             gziped_pac += chunk
     raw_pac = gzip.decompress(gziped_pac)
-    pacBlob.set(raw_pac)
+    pacBlob.set(rjsmin.jsmin(raw_pac))
