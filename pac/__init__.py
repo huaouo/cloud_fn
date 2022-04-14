@@ -12,4 +12,7 @@ def main(req: func.HttpRequest, pacBlob: str) -> func.HttpResponse:
     proxy = req.params.get('proxy')
     if not proxy:
         proxy = "127.0.0.1:1080"
-    return func.HttpResponse(pacBlob.replace("__PROXY__", f"\"PROXY {proxy}\""))
+    type = req.params.get('type')
+    if not type:
+        type = "PROXY"
+    return func.HttpResponse(pacBlob.replace("__PROXY__", f"\"{type} {proxy}\""))
